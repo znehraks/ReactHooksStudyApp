@@ -1,17 +1,11 @@
 import React, { useReducer, useState } from "react";
-
-const initialState = {
-  toDos: [],
-};
-const ADD = "increment";
-const reducer = (state, action) => {
-  switch (action.type) {
-    case ADD:
-      return { toDos: [...state.toDos, { text: action.payload }] };
-    default:
-      return;
-  }
-};
+import reducer, {
+  initialState,
+  ADD,
+  DELETE,
+  COMPLETE,
+  UNCOMPLETE,
+} from "./reducer";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -40,9 +34,47 @@ const App = () => {
       </form>
       <ul>
         <h2>To Dos</h2>
-        {state.toDos.map((toDo, index) => (
-          <li key={index}>{toDo.text}</li>
+        {state.toDos.map((toDo) => (
+          <li key={toDo.id}>
+            <span>{toDo.text}</span>
+            <span onClick={() => dispatch({ type: DELETE, payload: toDo.id })}>
+              {" "}
+              DELETE
+            </span>
+            <span
+              onClick={() => dispatch({ type: COMPLETE, payload: toDo.id })}
+            >
+              {" "}
+              COMPLETE
+            </span>
+          </li>
         ))}
+      </ul>
+      <ul>
+        {state.completed.length !== 0 && (
+          <>
+            <h2>Completed</h2>
+            {state.completed.map((toDo) => (
+              <li key={toDo.id}>
+                <span>{toDo.text}</span>
+                <span
+                  onClick={() => dispatch({ type: DELETE, payload: toDo.id })}
+                >
+                  {" "}
+                  DELETE
+                </span>
+                <span
+                  onClick={() =>
+                    dispatch({ type: UNCOMPLETE, payload: toDo.id })
+                  }
+                >
+                  {" "}
+                  UNCOMPLETE
+                </span>
+              </li>
+            ))}
+          </>
+        )}
       </ul>
     </>
   );
