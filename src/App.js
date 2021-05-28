@@ -1,14 +1,12 @@
 import React, { useState } from "react";
+import UserContextProvider from "./context";
 import Screen from "./Screen";
 
 const App = () => {
-  const [user] = useState({
-    name: "JungMin",
-  });
   return (
-    <>
-      <Screen user={user} />
-    </>
+    <UserContextProvider>
+      <Screen />
+    </UserContextProvider>
   );
 };
 export default App;
